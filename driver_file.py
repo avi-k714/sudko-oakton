@@ -18,7 +18,28 @@ puzzle = [
     [0, 0, 0, 0, 8, 0, 0, 7, 9],
 ]
 
-def checkValidMove()            #Avi
+
+def checkValidMove(puzzle, row, col, value):        #Avi
+    #Function: Return True if value can be placed in that box
+    #Approach: Check Row and Column and the 3 by 3 box to ensure that the 
+        #value is not already present in either of these
+
+    if value in puzzle[row]:
+        return False
+
+    for r in range(9):
+        if puzzle[r][col] == value:
+            return False
+
+    box_r = 3 * (row // 3)
+    box_c = 3 * (col // 3)
+
+    for r in range(box_r, box_r + 3):
+        for c in range(box_c, box_c + 3):
+            if puzzle[r][c] == value:
+                return False
+
+    return True
 
 
 def printPuzzle()               #Thuy
