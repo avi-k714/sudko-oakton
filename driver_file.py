@@ -5,17 +5,18 @@ CSC 255 OC1 - Group Assignment
 Sudoku Solver
 '''
 
-'''
+import random
+
 puzzle = [
-    [5, 3, 0, 0, 7, 0, 0, 0, 0],
-    [6, 0, 0, 1, 9, 5, 0, 0, 0],
-    [0, 9, 8, 0, 0, 0, 0, 6, 0],
-    [8, 0, 0, 0, 6, 0, 0, 0, 3],
-    [4, 0, 0, 8, 0, 3, 0, 0, 1],
-    [7, 0, 0, 0, 2, 0, 0, 0, 6],
-    [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    [0, 0, 0, 0, 8, 0, 0, 7, 9],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
 ]
 
 
@@ -42,18 +43,51 @@ def checkValidMove(puzzle, row, col, value):        #Avi
     return True
 
 
-def printPuzzle()               #Thuy
-
-def checkifPuzzleComplete()     #Thuy
-
-def checkEmptyCells()           #Sebastian
-
-def solveBacktracking()         #Sebastian
-
-def candidateNumbers()          #Sebastian
-
-def generateStartingBoard()      #Avi
+#def printPuzzle()               #Thuy
 
 
+#def checkifPuzzleComplete()     #Thuy
 
-'''
+def checkEmptyCells(puzzle):           #Avi
+    """Return (row, col) of the first empty cell, or None if full."""
+    for r in range(9):
+        for c in range(9):
+            if puzzle[r][c] == 0:
+                return (r, c)
+    return None
+
+#def solveBacktracking()         #Sebastian
+
+#def candidateNumbers()          #Sebastian
+
+def fillBoard(puzzle):
+    empty = checkEmptyCells(puzzle)
+    if not empty:
+        return True
+    row, col = empty
+    nums = list(range(1, 10))
+    random.shuffle(nums)
+    for value in nums:
+        if checkValidMove(puzzle, row, col, value):
+            puzzle[row][col] = value
+            if fillBoard(puzzle):
+                return True
+            puzzle[row][col] = 0
+    return False
+    
+def removeCells(puzzle, holes=40):
+    removed = 0
+    while removed < holes:
+        r = random.randint(0, 8)
+        c = random.randint(0, 8)
+        if puzzle[r][c] != 0:
+            puzzle[r][c] = 0
+            removed += 1
+
+def generateStartingBoard(puzzle):
+    fillBoard(puzzle)
+    removeCells(puzzle, holes=45)
+    return puzzle
+
+
+start_puzzle = generateStartingBoard(puzzle)
